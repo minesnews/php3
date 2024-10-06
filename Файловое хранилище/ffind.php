@@ -2,8 +2,8 @@
 
 $address = 'birthdays.txt';
 
-function readFile1($string){
-    $data = file_get_contents($string);
+function findFile($dir){
+    $data = file_get_contents($dir);
     $array = explode("\n", $data);
 	$num = count($array) - 1;
 	for($i = 0; $i < $num; $i++)
@@ -38,4 +38,4 @@ function validateDataBirthday(string $date):bool
     return false;
 }
 
-readFile1($address);
+findFile($address);
