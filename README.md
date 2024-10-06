@@ -211,4 +211,58 @@ readFile1($address);
 
 3. Удаление строки. Когда мы научились искать, надо научиться удалять конкретную строку. Запросите у пользователя имя или дату для удаляемой строки. После ввода либо удалите строку, оповестив пользователя, либо сообщите о том, что строка не найдена.
 
+### Решение: файл fdelete.php
+
+```
+<?php
+
+$address = 'birthdays.txt';
+
+$str = readline("Введите имя и фамилию или дату рождения для удаления всей строчки: ");
+function deleteFileLine($dir, $string){
+    if(file_exists($dir)){
+        $data = file_get_contents($dir);
+        
+        echo "Начало: $data";
+        $array = explode("\n", $data);
+
+        for($i = 0; $i < count($array); $i++)
+        {
+            $arrayLine = explode(",", $array[$i]);
+            for($j = 0; $j < count($arrayLine) - 1; $j++)
+            {
+                if(($arrayLine[0] === $string) || (verefyDateBirthday($string, $arrayLine[1])))
+                {
+                    echo "Найдено";
+                    echo $string . ";" .$arrayLine[1] . ";";
+                    $data = str_replace($array[$i], '', $data);
+                }
+                else 
+                {
+                    echo "Не найдено";
+                    echo $string . ";" . $arrayLine[1] . ";";
+
+                }
+            }
+        }
+
+        echo "Итог:$data";
+        file_put_contents($dir, $data);
+    }
+}
+
+function verefyDateBirthday($date_str, $date)
+{
+    $dateBlocks = explode("-", $date);
+    $strDateBlocks = explode("-", $date_str);
+    if(($dateBlocks[0] == $strDateBlocks[0]) && ($dateBlocks[1] == $strDateBlocks[1]) )
+    {
+        return true;
+    }
+    return false;
+}
+
+deleteFileLine($address, $str);
+```
+
 4. Добавьте новые функции в итоговое приложение работы с файловым хранилищем.
