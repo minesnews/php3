@@ -162,6 +162,54 @@ PS D:\Учеба\Основы PHP\Seminar\php3\Исправленный файл
 
 И здесь нам на помощь снова приходят циклы. Понадобится цикл, который будет построчно читать файл и искать совпадения в дате. Для обработки строки пригодится функция explode, а для получения текущей даты – date.
 
+### Решение:
+
+```
+<?php
+
+$address = 'birthdays.txt';
+
+function readFile1($string){
+    $data = file_get_contents($string);
+    $array = explode("\n", $data);
+	$num = count($array) - 1;
+	for($i = 0; $i < $num; $i++)
+	{
+        
+        $arrayLine = explode(",", $array[$i]);
+        for($j = 0; $j < count($arrayLine) -1 ; $j++)
+        {
+            if (validateDataBirthday($arrayLine[1]))
+            {
+                $result = $arrayLine[0] . ", " . $arrayLine[1] . "- поздравляем, вы именнинник!\n";
+                echo $result;
+            }
+            else
+            {
+
+                 $result = $arrayLine[0] . ", " . $arrayLine[1] . "- вы не именнинник, ждите своего дня рождения!\n";
+                 echo $result;
+            }
+        }
+	}
+    
+}
+
+function validateDataBirthday(string $date):bool
+{
+    $dateBlocks = explode("-", $date);
+    $currentDateBlocks = explode("-", date('d-m-Y', time()));
+    if(($dateBlocks[0] == $currentDateBlocks[0]) && ($dateBlocks[1] == $currentDateBlocks[1]) )
+    {
+        return true;
+    }
+    return false;
+}
+
+readFile1($address);
+
+```
+
 3. Удаление строки. Когда мы научились искать, надо научиться удалять конкретную строку. Запросите у пользователя имя или дату для удаляемой строки. После ввода либо удалите строку, оповестив пользователя, либо сообщите о том, что строка не найдена.
 
 4. Добавьте новые функции в итоговое приложение работы с файловым хранилищем.
